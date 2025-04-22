@@ -6,8 +6,11 @@ from . import draw_landmarks
 class ModelPipeline:
     def __init__(self,model_path):
 
-        self.model = ASLClassifier
-        self.model.load_state_dict(torch.load(model_path))
+        self.model = ASLClassifier()  # Create an instance of the model
+        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        checkpoint = torch.load(model_path, map_location=self.device)
+        self.model.load_state_dict(checkpoint['model_state_dict'])
+        self.model.to(self.device)
         self.criterion = nn.CrossEntropyLoss()
         self.optimizer = torch.optim.Adam(self.model.parameters(), lr=0.001)
     def train(self,data_loader):
@@ -35,6 +38,7 @@ class ModelPipeline:
             print(f"Epoch {epoch+1}, Total Loss: {total_loss:.4f}")
 
     def inference(self,image):
+        self.model.eval()
         frame = draw_landmarks(image)
         frame_tensor = torch.tensor(frame, dtype=torch.float32).permute(2,0,1).unsqueeze(0)
         pred = self.model(frame_tensor)
@@ -42,4 +46,4 @@ class ModelPipeline:
         return result.tolist()[0]
 
 
-model_pipeline = ModelPipeline("ASL\models\checkpoint.pth")
+model_pipeline = ModelPipeline(r"ASL\models\checkpoint.pth")
