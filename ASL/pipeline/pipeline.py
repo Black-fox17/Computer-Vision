@@ -2,7 +2,7 @@ import torch
 import os
 from models import ASLClassifier
 import torch.nn as nn
-from . import draw_landmarks
+from .utils import draw_landmarks,num_to_char
 class ModelPipeline:
     def __init__(self,model_path):
 
@@ -43,7 +43,7 @@ class ModelPipeline:
         frame_tensor = torch.tensor(frame, dtype=torch.float32).permute(2,0,1).unsqueeze(0)
         pred = self.model(frame_tensor)
         result = torch.argmax(pred, dim=1)
-        return result.tolist()[0]
+        return num_to_char(result.tolist()[0])
 
 
 model_pipeline = ModelPipeline(r"ASL\models\checkpoint.pth")
