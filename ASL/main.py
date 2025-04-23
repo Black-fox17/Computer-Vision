@@ -2,7 +2,9 @@ import cv2
 import numpy as np
 # from cvzone.HandTrackingModule import HandDetector
 import mediapipe as mp
+import os
 from pipeline import model_pipeline
+import random
 
 mp_hands = mp.solutions.hands
 hands = mp_hands.Hands(max_num_hands=2, min_detection_confidence=0.7)
@@ -52,6 +54,12 @@ while True:
                 input_image = cv2.resize(cropped_frame, (imgsize, imgsize))
                 input_image = cv2.cvtColor(input_image, cv2.COLOR_BGR2RGB)
                 predicted_char = model_pipeline.inference(input_image)
+                path_dirs = os.listdir(r"ASL\assets")
+                file_no = random.randint(0,10000)
+                if predicted_char not in path_dirs:
+                    os.makedirs(os.path.join(r"ASL\assets",predicted_char))
+                file_name = f"image_{predicted_char}_{file_no}.jpg"  # Added .jpg extension
+                cv2.imwrite(os.path.join(r"ASL\assets",predicted_char,file_name), cropped_new_frame)  # Save original cropped frame instead of processed input_image
             except Exception as e:
                 print(f"Error during prediction: {e}")
                 predicted_char = ""

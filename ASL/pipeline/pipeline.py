@@ -14,7 +14,7 @@ class ModelPipeline:
         self.criterion = nn.CrossEntropyLoss()
         self.optimizer = torch.optim.Adam(self.model.parameters(), lr=0.001)
     def train(self,data_loader):
-        for epoch in range(1):  # Adjust as needed
+        for epoch in range(1):  
             self.model.train()
             total_loss = 0
             print(f"\n=== Epoch {epoch+1} ===")
