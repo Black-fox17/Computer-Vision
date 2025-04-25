@@ -1,12 +1,7 @@
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
 
-.ASL/assets/
-.ASL/venv/
-.ASL/asl_alphabet.csv
-.ASL/asl_alphabet_train.csv
-.ASL/asl_alphabet_test.csv
-.ASL/asl_alphabet_test.csv
+best.pt
+129_new.mp4
+Football/runs/detect/predict/129.avi
+
+Football/output/output_video.avi
+ASL/assets/
